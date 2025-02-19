@@ -6,6 +6,13 @@ load('./estimation_data.mat')
 modes = 2^2;
 [n, N]=size(Theta);
 
+% shuffle data
+rand_perm=randperm(size(Theta, 2));
+Theta=Theta(:, rand_perm)
+for i=1:4
+Lambdas(:,:,i)=Lambdas(:,rand_perm,i)
+end
+
 P = H(:,:,1)
 s = f(:,1)
 P=H(:,:,1);
@@ -34,16 +41,12 @@ for i=1:modes
 P_est(:,:,i)=reshape(Phi(i,1:n^2),2,2);
 s_est(:,i)=reshape(Phi(i,n^2+1:end),1,n);
 end
+P_est(abs(P_est)<1e-5)=0;
 
 disp(['Estimated Ps'])
 disp(P_est)
 disp(['Nominal Ps'])
 disp(P_mult)
-disp(['Estimated s'])
-disp(s_est)
-disp(['Nominal ss'])
-disp(s)
-
 return
 %% plot data
 for lambda_idx=1:2
