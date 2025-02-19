@@ -46,7 +46,6 @@ function [Phi,z,err,norm_err] = kPC(X,Y,phi_init,modes,maxIter,maxErr)
 
             Phi(i,:)=-(Gamma*Omega)\(Gamma*Y(:));
         end
-        OldPhi=Phi;
 
         if norm(err,'fro')<maxErr
             exit_msg=1;
@@ -59,6 +58,7 @@ function [Phi,z,err,norm_err] = kPC(X,Y,phi_init,modes,maxIter,maxErr)
         % end
 
 
+        OldPhi=Phi;
 
     end
 
