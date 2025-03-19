@@ -52,16 +52,9 @@ fig=figure;
 subplot(1,2,1)
 z_colors={'r','b','k','g'};
 for idx_z=1:4;
-scatter3(Theta(1,z==idx_z),Theta(2,z==idx_z),Lambdas(lambda_idx,z==idx_z,1),z_colors{idx_z})
+scatter3(x(1,z==idx_z),x(2,z==idx_z),y(lambda_idx,z==idx_z),z_colors{idx_z})
 hold on
 end
 hold off
-subplot(1,2,2)
-for idx_z=1:4;
-scatter3(Theta(1,z==idx_z),Theta(2,z==idx_z),Lambdas(lambda_idx,z==idx_z,2),z_colors{idx_z})
-hold on
 end
-hold off
-sgtitle(['$\lambda_' num2str(lambda_idx) '$'],'interpreter','latex')
-% legend(["Nominal","Modified"])
-end
+
