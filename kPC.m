@@ -25,7 +25,7 @@ function [Phi,z,err,norm_err] = kPC(X,Y,phi_init,modes,maxIter,maxErr)
 
         % calculate errors
         for i=1:modes
-            y_lin=reshape(Omega*-Phi(i,:)',n,N);
+            y_lin=reshape(Omega*Phi(i,:)',n,N);
             y_lin_cell = cellfun(@(x) x',mat2cell(y_lin',ones(1,N))','UniformOutput',0);
             y_lin_diag=blkdiag(y_lin_cell{:});
             err_diag=y_diag-y_lin_diag;
@@ -44,7 +44,7 @@ function [Phi,z,err,norm_err] = kPC(X,Y,phi_init,modes,maxIter,maxErr)
             resp2=cellfun(@(x) x*eye(n),mat2cell(responsibilities',ones(1,N)),'UniformOutput',0);
             Gamma=sqrt(sparse(blkdiag(resp2{:})));
 
-            Phi(i,:)=-(Gamma*Omega)\(Gamma*Y(:));
+            Phi(i,:)=(Gamma*Omega)\(Gamma*Y(:));
         end
 
         if norm(err,'fro')<maxErr
