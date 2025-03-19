@@ -232,7 +232,24 @@ end
 end
 end
 %%
-Theta=em_theta;
-Lambdas=em_lambda;
+x=em_theta;
+y=em_lambda(:,:,1);
 
-save('estimation_data.mat','Theta','Lambdas','H','f');
+P = -H(:,:,1);
+s = -f(:,1);
+invP=inv(P);
+
+for k=1:2^n-1 % 0-th is already empty
+active=nonzeros(bitget(k,1:n).*(1:n));
+inactive=setdiff(1:n,active);
+P_mult(active,active,k+1)=adjoint(invP(active,active)).'./det(P(inactive,inactive))*det(P);
+% BUG(accacio) correct s_mult
+s_mult(:,k+1)=f(:,1);
+end
+
+Phibar=[vec(P_mult(:,:,1)).' f(:,1).';
+    vec(P_mult(:,:,2)).' f(:,2).'
+    vec(P_mult(:,:,3)).' f(:,3).'
+    vec(P_mult(:,:,4)).' f(:,4).'];
+Phibar=sortrows(Phibar);
+save('estimation_data.mat','x','y','Phibar');
